@@ -1,0 +1,604 @@
+/* style.css — SkillSwap PH
+   Works WITH Tailwind CDN, not replacing it.
+   Contains PWA-specific, animations, overrides, and responsive fixes.
+*/
+
+/* ────────────────────────────────────────────
+   Custom Scrollbar (consistent across all pages)
+   ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ────────────────────────────────────────────
+   Global Smooth Scroll & Tap Highlight
+   ──────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ────────────────────────────────────────────
+   Toast Notification (used across pages)
+   ──────────────────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0f172a;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    white-space: nowrap;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    pointer-events: none;
+}
+
+#toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ────────────────────────────────────────────
+   Modal Overlay (used in skills.html)
+   ──────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-overlay .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 340px;
+    width: 90%;
+    transform: scale(0.95);
+    transition: transform 0.2s;
+}
+
+.modal-overlay.show .modal {
+    transform: scale(1);
+}
+
+/* ────────────────────────────────────────────
+   Loading Spinner
+   ──────────────────────────────────────────── */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ────────────────────────────────────────────
+   Fade Up Animation
+   ──────────────────────────────────────────── */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ────────────────────────────────────────────
+   Skeleton Loading (for future API integration)
+   ──────────────────────────────────────────── */
+.skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+/* ────────────────────────────────────────────
+   PWA — iOS splash screen & standalone mode
+   ──────────────────────────────────────────── */
+@media all and (display-mode: standalone) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* ────────────────────────────────────────────
+   Print styles (optional)
+   ──────────────────────────────────────────── */
+@media print {
+
+    .topnav,
+    .sidebar,
+    .nav-actions,
+    .btn-primary,
+    .btn-connect {
+        display: none !important;
+    }
+
+    .main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body {
+        background: white;
+    }
+}
+
+/* ────────────────────────────────────────────
+   Form validation styles (login page)
+   ──────────────────────────────────────────── */
+.input-group input.error {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+/* ────────────────────────────────────────────
+   Responsive breakpoint helpers (mobile first)
+   ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+    #toast {
+        white-space: normal;
+        text-align: center;
+        max-width: 85%;
+        font-size: 0.8rem;
+    }
+}
+
+/* ────────────────────────────────────────────
+   Neo-Brutalist Global Variables & Tokens Override
+   ──────────────────────────────────────────── */
+:root {
+    --bg: #eef3f6 !important;
+    --border: #1e293b !important;
+    --text: #1e293b !important;
+    --blue: #f35d38 !important;       /* Vibrant Learnify Orange */
+    --blue-dark: #d84a24 !important;
+    --blue-light: #fad875 !important;      /* Warm active yellow */
+    --blue-mid: #fcd34d !important;
+    --green: #10b981 !important;
+    --green-light: #dcfce7 !important;
+    --yellow: #fbbf24 !important;
+    --yellow-light: #fef9c3 !important;
+    --red: #ef4444 !important;
+    --red-light: #fee2e2 !important;
+    --white: #ffffff !important;
+}
+
+body {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+/* ────────────────────────────────────────────
+   Neo-Brutalist Card Overrides & Animations
+   ──────────────────────────────────────────── */
+.match-card, .featured-card, .panel-card, .my-skill-item, .stat-card, .reviews-card, .browse-item, .session-item, .form-card, .exchange-card, .message-card, .profile-card, .table-card {
+    border: 2.5px solid var(--border) !important;
+    box-shadow: 4px 4px 0px 0px var(--border) !important;
+    border-radius: 16px !important;
+    background: var(--white) !important;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.match-card:hover, .featured-card:hover, .panel-card:hover, .my-skill-item:hover, .stat-card:hover, .session-item:hover, .exchange-card:hover, .message-card:hover {
+    transform: translate(-3px, -3px) !important;
+    box-shadow: 7px 7px 0px 0px var(--border) !important;
+}
+
+/* Learnify Colorful Alternating Cards Pattern */
+.match-card:nth-child(3n+1), .exchange-card:nth-child(3n+1), .message-card:nth-child(3n+1) {
+    background: #fad875 !important; /* Pastel Yellow */
+}
+.match-card:nth-child(3n+2), .exchange-card:nth-child(3n+2), .message-card:nth-child(3n+2) {
+    background: #c7a7f9 !important; /* Pastel Purple */
+}
+.match-card:nth-child(3n+3), .exchange-card:nth-child(3n+3), .message-card:nth-child(3n+3) {
+    background: #b4e3f6 !important; /* Pastel Blue */
+}
+
+/* Dynamic Tag Styles */
+.skill-tag, .tag-offer, .tag-need, .detail-chip, .skill-level-badge {
+    border: 1.5px solid var(--border) !important;
+    font-weight: 700 !important;
+    border-radius: 20px !important;
+}
+.tag-offer {
+    background: #dcfce7 !important;
+    color: #15803d !important;
+}
+.tag-need {
+    background: #fef9c3 !important;
+    color: #a16207 !important;
+}
+
+/* ────────────────────────────────────────────
+   Neo-Brutalist Button Overrides
+   ──────────────────────────────────────────── */
+.btn-connect, .btn-primary, .btn-add, .btn-logout, .btn-accept, .btn-complete, .btn-cancel, .btn-confirm-del {
+    border: 2px solid var(--border) !important;
+    box-shadow: 2px 2px 0px 0px var(--border) !important;
+    border-radius: 10px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease !important;
+}
+
+.btn-connect:hover, .btn-primary:hover, .btn-add:hover, .btn-accept:hover, .btn-complete:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px var(--border) !important;
+    background-color: #f35d38 !important; /* Learnify Orange */
+    color: var(--white) !important;
+}
+
+.btn-connect:active, .btn-primary:active, .btn-add:active, .btn-accept:active, .btn-complete:active {
+    transform: translate(1px, 1px) !important;
+    box-shadow: 1px 1px 0px 0px var(--border) !important;
+}
+
+.btn-connect.sent {
+    background: var(--border) !important;
+    color: var(--white) !important;
+    box-shadow: none !important;
+    cursor: default !important;
+    transform: none !important;
+}
+
+/* ────────────────────────────────────────────
+   Navigation & Layout Components Redesign
+   ──────────────────────────────────────────── */
+.topnav {
+    border-bottom: 2.5px solid var(--border) !important;
+    background: var(--white) !important;
+    box-shadow: 0 2px 0px rgba(0,0,0,0.02) !important;
+}
+
+.brand-logo {
+    background: #f35d38 !important; /* Brand Orange */
+    border: 2px solid var(--border) !important;
+    border-radius: 10px !important;
+}
+
+.brand-name {
+    font-weight: 800 !important;
+    color: var(--text) !important;
+}
+
+.search-bar {
+    border: 2px solid var(--border) !important;
+    background: var(--white) !important;
+    border-radius: 12px !important;
+    box-shadow: 2px 2px 0px 0px var(--border) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 4px 10px !important;
+}
+
+.search-bar:focus-within {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px var(--border) !important;
+}
+
+.search-bar input {
+    order: 1 !important;
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: var(--text) !important;
+}
+
+.search-bar svg {
+    background: #f35d38 !important; /* Orange badge icon */
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 50% !important;
+    padding: 8px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    order: 2 !important;
+}
+
+/* Circular Bell & Chat top navigation buttons */
+.nav-btn {
+    border: 2px solid var(--border) !important;
+    box-shadow: 2px 2px 0px 0px var(--border) !important;
+    border-radius: 50% !important;
+    background: var(--white) !important;
+    transition: all 0.15s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.nav-btn:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px var(--border) !important;
+    background: #fad875 !important; /* Pastel active yellow hover */
+}
+
+.nav-btn .badge {
+    background: #f35d38 !important;
+    border: 1.5px solid var(--border) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    top: -2px !important;
+    right: -2px !important;
+}
+
+/* Premium Dark Sidebar Layout */
+.sidebar {
+    border-right: 2.5px solid var(--border) !important;
+    background: #18181b !important; /* Zinc 900 Dark Charcoal Background */
+}
+
+.sidebar-label {
+    color: #71717a !important; /* Muted gray label font */
+    font-weight: 800 !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    padding-left: 12px !important;
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+}
+
+.nav-link {
+    border: 2px solid transparent !important;
+    border-radius: 12px !important;
+    transition: all 0.15s ease !important;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    color: #a1a1aa !important; /* Outstandingly readable gray navigation labels */
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 10px 14px !important;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border-color: #27272a !important;
+}
+
+.nav-link svg {
+    width: 20px !important;
+    height: 20px !important;
+    color: #a1a1aa !important;
+    transition: all 0.15s ease !important;
+    stroke: currentColor !important;
+}
+
+.nav-link:hover svg {
+    color: #ffffff !important;
+}
+
+.nav-link.active {
+    background: transparent !important;
+    color: #ffffff !important; /* Bold pure white text for active icon name */
+    font-weight: 800 !important;
+    pointer-events: none !important;
+}
+
+.nav-link.active svg {
+    background: #fbbf24 !important; /* Yellow active badge squircle container */
+    color: #18181b !important;       /* Dark icon inside */
+    stroke: #18181b !important;
+    border: 2px solid var(--border) !important;
+    box-shadow: 2px 2px 0px 0px #000000 !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+/* Orange Welcome Banner overriding deep blues */
+.welcome-banner {
+    background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%) !important; /* Vibrant Orange gradient welcome banner */
+    border: 2.5px solid var(--border) !important;
+    box-shadow: 4px 4px 0px 0px var(--border) !important;
+    border-radius: 16px !important;
+    color: #ffffff !important;
+    padding: 20px !important;
+}
+
+.welcome-banner h2, .welcome-banner p, .welcome-banner span {
+    color: #ffffff !important;
+}
+
+.see-all {
+    border: 1.5px solid var(--border) !important;
+    font-weight: 700 !important;
+    background: var(--white) !important;
+    color: var(--text) !important;
+    box-shadow: 2px 2px 0px 0px var(--border) !important;
+    border-radius: 20px !important;
+}
+
+.see-all:hover {
+    background: #fad875 !important;
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px var(--border) !important;
+}
+
+/* User avatar navigation bubble */
+.avatar-btn {
+    border: 2px solid var(--border) !important;
+    background: #f97316 !important; /* Orange avatar JD bubble */
+    color: var(--white) !important;
+    font-weight: 800 !important;
+    border-radius: 50% !important;
+    box-shadow: 2px 2px 0px 0px var(--border) !important;
+}
+
+.avatar-btn:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px var(--border) !important;
+}
+
+/* Logout Button */
+.logout-btn {
+    border-top: 2px solid #27272a !important; /* Dark charcoal separator */
+    margin-top: auto !important;
+    padding-top: 16px !important;
+}
+
+.btn-logout {
+    background: rgba(239, 68, 68, 0.08) !important;
+    color: #f87171 !important;
+    border: 2px solid #ef4444 !important;
+    box-shadow: 2px 2px 0px 0px #000000 !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    padding: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    transition: all 0.15s ease !important;
+}
+
+.btn-logout:hover {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px #000000 !important;
+}
+
+.btn-logout svg {
+    color: inherit !important;
+}
+
+/* ────────────────────────────────────────────
+   Unified Page & Component Transitions
+   ──────────────────────────────────────────── */
+.main {
+    animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.main > div {
+    animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.switch-user-btn {
+    border: 2px solid var(--border) !important;
+    background: #fad875 !important; /* Pastel active yellow */
+    color: #1e293b !important;       /* Dark text */
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.05em !important;
+    box-shadow: 2px 2px 0px 0px #000000 !important;
+    transition: all 0.15s ease !important;
+    margin-top: 8px !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+.switch-user-btn:hover {
+    background: #fcd34d !important;
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px 0px #000000 !important;
+}
+
+.switch-user-btn svg {
+    stroke: currentColor !important;
+}
+
+/* ────────────────────────────────────────────
+   Responsive Hamburger Menu Visibility Fix
+   ──────────────────────────────────────────── */
+.hamburger {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: inline-flex !important;
+    }
+}
+
+
+

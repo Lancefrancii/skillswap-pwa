@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>SkillSwap PH — My Skills</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="style.css" rel="stylesheet">
+  <script src="global.js"></script>
+
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-light: #eff6ff;
+      --blue-mid: #dbeafe;
+      --green: #10b981;
+      --green-light: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-light: #fef9c3;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --purple: #7c3aed;
+      --purple-light: #f3e8ff;
+      --text: #0f172a;
+      --text-mid: #475569;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --bg: #f1f5f9;
+      --white: #ffffff;
+      --nav-h: 64px;
+      --sidebar-w: 260px;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .topnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 160px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 380px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 6px 12px;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--blue);
+      background: white;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.8rem;
+    }
+
+    .nav-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-mid);
+    }
+
+    .nav-btn:hover {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .avatar-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      display: none;
+    }
+
+    .layout {
+      display: flex;
+      margin-top: var(--nav-h);
+      min-height: calc(100vh - var(--nav-h));
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: white;
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      height: calc(100vh - var(--nav-h));
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 50;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 16px 10px 6px;
+    }
+
+    .sidebar-label:first-child {
+      padding-top: 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      background: var(--blue-light);
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .nav-link svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .logout-btn {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 9px;
+      border-radius: 10px;
+      border: 1.5px solid var(--red-light);
+      background: var(--red-light);
+      color: var(--red);
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn-logout:hover {
+      background: var(--red);
+      color: white;
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .page-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .page-sub {
+      font-size: 0.7rem;
+      color: var(--text-mid);
+      margin-top: 2px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-card:hover {
+      border-color: var(--blue);
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .stat-num {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-mid);
+      margin-top: 2px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .panel-title .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .panel-body {
+      padding: 12px 14px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 12px;
+      background: var(--bg);
+      padding: 3px;
+      border-radius: 8px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-mid);
+      background: transparent;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: var(--blue);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .browse-list {
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .browse-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .browse-item:hover {
+      background: var(--blue-light);
+      border-color: var(--blue-mid);
+    }
+
+    .browse-item.already-added {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .browse-item-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .browse-item-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .browse-item-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .browse-item-cat {
+      font-size: 0.6rem;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+
+    .btn-add {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      background: var(--blue-mid);
+      border: none;
+      color: var(--blue);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-add:hover {
+      background: var(--blue);
+      color: white;
+    }
+
+    #categoryPills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .cat-pill {
+      padding: 3px 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-mid);
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .cat-pill.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    .my-skill-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+      background: white;
+    }
+
+    .my-skill-item:hover {
+      border-color: var(--blue);
+    }
+
+    .my-skill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .my-skill-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .my-skill-cat {
+      font-size: 0.6rem;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+
+    .level-select {
+      font-size: 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 5px;
+      background: var(--bg);
+      cursor: pointer;
+    }
+
+    .skill-level-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 16px;
+    }
+
+    .level-beginner {
+      background: var(--yellow-light);
+      color: #a16207;
+    }
+
+    .level-intermediate {
+      background: var(--blue-mid);
+      color: var(--blue);
+    }
+
+    .level-advanced {
+      background: var(--green-light);
+      color: #15803d;
+    }
+
+    .btn-remove {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      background: var(--red-light);
+      border: none;
+      color: var(--red);
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    .btn-remove:hover {
+      background: var(--red);
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 12px;
+      color: var(--text-light);
+    }
+
+    .empty-state .emoji {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 0.7rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      max-width: 300px;
+      width: 90%;
+    }
+
+    .modal-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .modal-desc {
+      font-size: 0.75rem;
+      color: var(--text-mid);
+      margin-bottom: 16px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-confirm-del {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      background: var(--red);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0f172a;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      transition: transform 0.3s ease;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #navOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(2px);
+    }
+
+    #navOverlay.show {
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 12px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .brand {
+        min-width: auto;
+      }
+
+      .brand-name {
+        display: none;
+      }
+
+      .search-bar {
+        max-width: 100%;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .stats-row {
+        gap: 8px;
+      }
+
+      .page-title {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="toast"></div>
+  <div id="navOverlay" onclick="toggleSidebar()"></div>
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="modal-title">Remove Skill?</div>
+      <div class="modal-desc" id="deleteModalDesc">Remove this skill?</div>
+      <div class="modal-actions"><button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button><button
+          class="btn-confirm-del" id="confirmDelBtn">Remove</button></div>
+    </div>
+  </div>
+
+  <nav class="topnav">
+    <button class="hamburger nav-btn" onclick="toggleSidebar()"><svg width="16" height="16" fill="none"
+        stroke="currentColor" stroke-width="2.5">
+        <line x1="2" y1="5" x2="16" y2="5" />
+        <line x1="2" y1="9" x2="16" y2="9" />
+        <line x1="2" y1="13" x2="16" y2="13" />
+      </svg></button>
+    <div class="brand">
+      <div class="brand-logo"><svg viewBox="0 0 28 28" fill="none">
+          <path d="M7 9l7-5 7 5v10l-7 5-7-5V9z" fill="white" opacity="0.9" />
+        </svg></div><span class="brand-name">SkillSwap PH</span>
+    </div>
+    <div class="search-bar"><svg width="12" height="12" fill="none" stroke="#94a3b8" stroke-width="2"
+        viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
+      </svg><input type="text" id="globalSearch" placeholder="Search skills, people..." /></div>
+    <div class="nav-actions">
+      <div class="nav-btn" onclick="showToast('🔔 No notifications')"><svg width="14" height="14" fill="none"
+          stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+        </svg></div>
+      <div class="nav-btn" onclick="window.location.href='messages.html'"><svg width="14" height="14" fill="none"
+          stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg></div>
+      <div class="avatar-btn" id="userAvatar" onclick="window.location.href='profile.html'">US</div>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-label">Navigation</p>
+      <a href="dashboard.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>Dashboard</a>
+      <a href="skills.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>My Skills</a>
+      <a href="matches.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="9" cy="7" r="4" />
+          <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <path d="M21 21v-2a4 4 0 0 0-3-3.85" />
+        </svg>Matches</a>
+      <a href="exchanges.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>Exchanges</a>
+      <a href="messages.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>Messages</a>
+      <a href="profile.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>Profile</a>
+      <div class="logout-btn"><button class="btn-logout" onclick="logout()"><svg width="14" height="14" fill="none"
+            stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>Log Out</button></div>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Skill Management</h1>
+          <p class="page-sub">Add skills you can offer and learn</p>
+        </div><button onclick="showToast('💡 Add both offer and need skills!')"
+          style="padding:5px 12px;border-radius:6px;border:1px solid var(--blue-mid);background:var(--blue-light);color:var(--blue);font-size:0.7rem;cursor:pointer;">💡
+          Tips</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--blue-light);">🎯</div>
+          <div>
+            <div class="stat-num" id="statOffer">0</div>
+            <div class="stat-label">Skills I Offer</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--yellow-light);">📚</div>
+          <div>
+            <div class="stat-num" id="statNeed">0</div>
+            <div class="stat-label">Skills I Need</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--green-light);">🤝</div>
+          <div>
+            <div class="stat-num" id="statMatches">0</div>
+            <div class="stat-label">Skill Matches</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--purple-light);">⭐</div>
+          <div>
+            <div class="stat-num" id="statRating">—</div>
+            <div class="stat-label">Avg. Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <div class="dot" style="background:var(--green);"></div>Browse & Add Skills
+            </div><span style="font-size:0.6rem;color:var(--text-light);">120 avail</span>
+          </div>
+          <div class="panel-body">
+            <div class="tab-row"><button class="tab-btn active" id="tabOffer" onclick="switchAddTab('offer')">➕ I Can
+                Offer</button><button class="tab-btn" id="tabNeed" onclick="switchAddTab('need')">📖 I Want to
+                Learn</button></div>
+            <div id="categoryPills"></div>
+            <div class="browse-list" id="browseList"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <div class="dot" style="background:var(--blue);"></div>My Skills
+            </div><span id="mySkillCount"
+              style="background:var(--blue-mid);color:var(--blue);font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:12px;">0
+              skills</span>
+          </div>
+          <div class="panel-body">
+            <div class="tab-row"><button class="tab-btn active" id="myTabOffer" onclick="switchMyTab('offer')">🎯
+                Offering</button><button class="tab-btn" id="myTabNeed" onclick="switchMyTab('need')">📚
+                Learning</button></div>
+            <div id="mySkillsList" style="max-height:280px;overflow-y:auto;"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const JWT_TOKEN = localStorage.getItem('jwt_token');
+    let addTab = 'offer', myTab = 'offer', activeCategoryFilter = 'all', pendingDeleteId = null, pendingDeleteType = null;
+    let mySkills = { offer: [], need: [] };
+    const ALL_SKILLS = [
+      { id: 1, name: 'Web Development', category: 'IT & Programming', icon: '💻', color: '#dbeafe' },
+      { id: 2, name: 'React / Next.js', category: 'IT & Programming', icon: '⚛️', color: '#dbeafe' },
+      { id: 3, name: 'Python', category: 'IT & Programming', icon: '🐍', color: '#dbeafe' },
+      { id: 4, name: 'Data Science', category: 'IT & Programming', icon: '📊', color: '#dbeafe' },
+      { id: 5, name: 'Machine Learning', category: 'IT & Programming', icon: '🤖', color: '#dbeafe' },
+      { id: 6, name: 'Mobile Dev', category: 'IT & Programming', icon: '📱', color: '#dbeafe' },
+      { id: 7, name: 'UI/UX Design', category: 'IT & Programming', icon: '🎨', color: '#dbeafe' },
+      { id: 8, name: 'Cybersecurity', category: 'IT & Programming', icon: '🔒', color: '#dbeafe' },
+      { id: 9, name: 'Graphic Design', category: 'Creative Design', icon: '🖌️', color: '#f3e8ff' },
+      { id: 10, name: 'Video Editing', category: 'Creative Design', icon: '🎬', color: '#f3e8ff' }
+    ];
+    const CATEGORIES = ['all', 'IT & Programming', 'Creative Design'];
+
+    function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+    function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
+    function loadUserSkills() { if (typeof SkillSwap !== 'undefined' && SkillSwap.userSkills) { mySkills = { offer: [...(SkillSwap.userSkills.offer || [])], need: [...(SkillSwap.userSkills.need || [])] }; } else { const saved = localStorage.getItem('userSkills'); if (saved) mySkills = JSON.parse(saved); } updateStats(); }
+    function saveUserSkills() { localStorage.setItem('userSkills', JSON.stringify(mySkills)); }
+    function updateStats() { document.getElementById('statOffer').textContent = mySkills.offer.length; document.getElementById('statNeed').textContent = mySkills.need.length; const total = mySkills.offer.length + mySkills.need.length; document.getElementById('mySkillCount').textContent = `${total} skill${total !== 1 ? 's' : ''}`; }
+    function renderCategoryPills() { const wrap = document.getElementById('categoryPills'); wrap.innerHTML = CATEGORIES.map(c => { const label = c === 'all' ? 'All' : c; const active = c === activeCategoryFilter; return `<button class="cat-pill ${active ? 'active' : ''}" onclick="setCategoryFilter('${c}')">${label}</button>`; }).join(''); }
+    function getAddedIds() { return [...mySkills.offer, ...mySkills.need].map(s => s.id); }
+    function renderBrowseList() { const list = document.getElementById('browseList'); let filtered = ALL_SKILLS.filter(s => activeCategoryFilter === 'all' || s.category === activeCategoryFilter); const addedIds = getAddedIds(); if (!filtered.length) { list.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><p>No skills found</p></div>`; return; } list.innerHTML = filtered.map(s => { const added = addedIds.includes(s.id); return `<div class="browse-item ${added ? 'already-added' : ''}"><div class="browse-item-left"><div class="browse-item-icon" style="background:${s.color}">${s.icon}</div><div><div class="browse-item-name">${s.name}</div><div class="browse-item-cat">${s.category}</div></div></div><button class="btn-add" onclick="addSkill(${s.id})" ${added ? 'disabled' : ''}>${added ? '✓' : '+'}</button></div>`; }).join(''); }
+    function renderMySkills() { const list = document.getElementById('mySkillsList'); const data = mySkills[myTab]; if (!data.length) { list.innerHTML = `<div class="empty-state"><div class="emoji">${myTab === 'offer' ? '🎯' : '📚'}</div><p>${myTab === 'offer' ? 'No skills added' : 'No learning goals'}</p></div>`; return; } list.innerHTML = data.map(s => `<div class="my-skill-item"><div class="my-skill-icon" style="background:${s.color}">${s.icon}</div><div style="flex:1;"><div class="my-skill-name">${s.name}</div><div class="my-skill-cat">${s.category}</div></div><select class="level-select" onchange="updateLevel(${s.id}, '${myTab}', this.value)"><option value="beginner" ${s.level === 'beginner' ? 'selected' : ''}>Beginner</option><option value="intermediate" ${s.level === 'intermediate' ? 'selected' : ''}>Intermediate</option><option value="advanced" ${s.level === 'advanced' ? 'selected' : ''}>Advanced</option></select><span class="skill-level-badge level-${s.level}">${capitalize(s.level)}</span><button class="btn-remove" onclick="confirmRemove(${s.id}, '${myTab}', '${s.name}')">✕</button></div>`).join(''); }
+    async function addSkill(skillId) { const skill = ALL_SKILLS.find(s => s.id === skillId); if (!skill) return; if (mySkills[addTab].find(s => s.id === skillId)) { showToast('⚠️ Already in list!'); return; } const entry = { ...skill, level: 'beginner' }; mySkills[addTab].push(entry); saveUserSkills(); renderBrowseList(); if (myTab === addTab) renderMySkills(); updateStats(); showToast(`✅ "${skill.name}" added!`); }
+    function confirmRemove(skillId, type, name) { pendingDeleteId = skillId; pendingDeleteType = type; document.getElementById('deleteModalDesc').textContent = `Remove "${name}"?`; document.getElementById('deleteModal').classList.add('show'); document.getElementById('confirmDelBtn').onclick = () => removeSkill(skillId, type); }
+    function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); }
+    async function removeSkill(skillId, type) { closeDeleteModal(); mySkills[type] = mySkills[type].filter(s => s.id !== skillId); saveUserSkills(); renderMySkills(); renderBrowseList(); updateStats(); showToast('🗑️ Skill removed.'); }
+    function updateLevel(skillId, type, level) { const skill = mySkills[type].find(s => s.id === skillId); if (skill) { skill.level = level; saveUserSkills(); renderMySkills(); showToast(`📈 Level updated to ${capitalize(level)}`); } }
+    function switchAddTab(tab) { addTab = tab; document.getElementById('tabOffer').classList.toggle('active', tab === 'offer'); document.getElementById('tabNeed').classList.toggle('active', tab === 'need'); renderBrowseList(); }
+    function switchMyTab(tab) { myTab = tab; document.getElementById('myTabOffer').classList.toggle('active', tab === 'offer'); document.getElementById('myTabNeed').classList.toggle('active', tab === 'need'); renderMySkills(); }
+    function setCategoryFilter(cat) { activeCategoryFilter = cat; renderCategoryPills(); renderBrowseList(); }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('navOverlay').classList.toggle('show'); }
+    function logout() { localStorage.removeItem('jwt_token'); localStorage.removeItem('userSkills'); window.location.href = 'index.html'; }
+    function updateUserAvatar() { if (typeof SkillSwap !== 'undefined' && SkillSwap.currentUser) { document.getElementById('userAvatar').textContent = SkillSwap.currentUser.avatar; document.getElementById('statRating').textContent = SkillSwap.currentUser.rating; document.getElementById('statMatches').textContent = SkillSwap.currentUser.exchanges || 3; } else { const savedEmail = localStorage.getItem('user_email') || 'User'; const initial = savedEmail.split('@')[0].slice(0, 2).toUpperCase(); document.getElementById('userAvatar').textContent = initial; } }
+    window.addEventListener('DOMContentLoaded', () => { if (!JWT_TOKEN && !localStorage.getItem('jwt_token')) { window.location.href = 'index.html'; return; } loadUserSkills(); updateUserAvatar(); renderCategoryPills(); renderBrowseList(); renderMySkills(); });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+  </script>
+</body>
+
+</html>
